@@ -3,6 +3,7 @@ import { ListItemButton, ListItemText, ListItem, IconButton } from '@mui/materia
 import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoneIcon from '@mui/icons-material/Done';
+import ReplayIcon from '@mui/icons-material/Replay';
 
 const TodoItem = (props) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -18,26 +19,39 @@ const TodoItem = (props) => {
             }}
         >
             <ListItem
+                sx={{
+                    backGroundColor: "red"
+                }}
                 secondaryAction={
-                    <>
-                    <IconButton
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            props.methods.changeItem(props.item.id, "completed", true);
-                        }}
-                    >
-                        <DoneIcon />
-                    </IconButton>
-                    <IconButton
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            // props.methods.deleteItem(props.item.id);
-                            props.methods.changeItem(props.item.id, "deleted", true);
-                        }}
-                    >
-                        <DeleteIcon />
-                    </IconButton>
-                    </>
+                    props.currentPanel === "todo"
+                        ? <>
+                            <IconButton
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    props.methods.changeItem(props.item.id, "doneDate", Date().toLocaleString());
+                                }}
+                            >
+                                <DoneIcon />
+                            </IconButton>
+                            <IconButton
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    props.methods.changeItem(props.item.id, "deleteDate", Date().toLocaleString());
+                                }}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </>
+                        : <>
+                            <IconButton
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    props.methods.redoItem(props.item.id);
+                                }}
+                            >
+                                <ReplayIcon />
+                            </IconButton>
+                        </>
                 }
             >
                 {
